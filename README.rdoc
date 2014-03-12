@@ -1,0 +1,7 @@
+== Example
+    $ bundle exec rake db:setup
+    $ bundle exec railc c
+    Loading development environment (Rails 4.0.3)
+    irb(main):001:0> ActiveModel::ArraySerializer.new(Catalog.where(:catalog_id => nil, :secondary_catalog_id => nil), :root => :catalogs).as_json
+    ...
+    => {:catalogs=>[{:id=>1, :name=>"1", :catalog_ids=>[2, 3], :secondary_catalog_ids=>[]}]}
