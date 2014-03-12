@@ -1,7 +1,22 @@
 == Example
     $ bundle exec rake db:setup
     $ bundle exec railc c
-    Loading development environment (Rails 4.0.3)
+    irb(main):009:0> pp Catalog.all
+    [#<Catalog id: 1, name: "1", catalog_id: nil, secondary_catalog_id: nil, created_at: "2014-03-12 18:03:37", updated_at: "2014-03-12 18:03:37">,
+     #<Catalog id: 2, name: "2", catalog_id: 1, secondary_catalog_id: nil, created_at: "2014-03-12 18:03:37", updated_at: "2014-03-12 18:03:37">,
+     #<Catalog id: 3, name: "3", catalog_id: 1, secondary_catalog_id: nil, created_at: "2014-03-12 18:03:37", updated_at: "2014-03-12 18:03:37">,
+     #<Catalog id: 4, name: "4", catalog_id: nil, secondary_catalog_id: 2, created_at: "2014-03-12 18:03:37", updated_at: "2014-03-12 18:03:37">]
+     
+active_model_serializers 0.8.1
     irb(main):001:0> ActiveModel::ArraySerializer.new(Catalog.where(:catalog_id => nil, :secondary_catalog_id => nil), :root => :catalogs).as_json
     ...
     => {:catalogs=>[{:id=>1, :name=>"1", :catalog_ids=>[2, 3], :secondary_catalog_ids=>[]}]}
+
+active_model_serializers 0.9.0.alpha1
+
+    irb(main):001:0> ActiveModel::ArraySerializer.new(Catalog.where(:catalog_id => nil, :secondary_catalog_id => nil), :root => :catalogs).as_json
+    ...
+    => {:catalogs=>[{:id=>4, :name=>"4", "catalog_ids"=>[], "secondary_catalog_ids"=>[]}, {:id=>2, :name=>"2", "catalog_ids"=>[], "secondary_catalog_ids"=>[4]}, {:id=>3, :name=>"3", "catalog_ids"=>[], "secondary_catalog_ids"=>[]}]}
+
+But should be:
+    => {:catalogs=>[{:id=>1, :name=>"1", :catalog_ids=>[2, 3], :secondary_catalog_ids=>[]}], {:id=>4, :name=>"4", "catalog_ids"=>[], "secondary_catalog_ids"=>[]}, {:id=>2, :name=>"2", "catalog_ids"=>[], "secondary_catalog_ids"=>[4]}, {:id=>3, :name=>"3", "catalog_ids"=>[], "secondary_catalog_ids"=>[]}]}
